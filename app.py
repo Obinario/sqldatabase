@@ -2,21 +2,23 @@ from flask import Flask, request, jsonify, render_template
 import mysql.connector
 from datetime import datetime
 import os
+from dotenv import load_dotenv  # <-- new import
 
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 
 # ===== DATABASE CONNECTION =====
 def get_db_connection():
-
     return mysql.connector.connect(
-        host="34.170.34.174",
-        user="root",
-        password="Psau_2025",
-        database="psau_admission",
-        port=3306,
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME"),
+        port=int(os.getenv("DB_PORT", 3306)),
     )
-
+    
 # ====== 1️⃣ GET FAQ ANSWER ======
 @app.route('/faqs', methods=['GET'])
 def get_faq():
